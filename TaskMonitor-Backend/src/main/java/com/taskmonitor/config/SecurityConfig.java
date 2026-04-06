@@ -69,7 +69,8 @@ public class SecurityConfig {
         // Allow both the Vite dev server origin AND the backend origin (for proxying)
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "http://localhost:8080"
+                "http://localhost:8080",
+                "https://personal-goal-and-task-tracker.vercel.app"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
