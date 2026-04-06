@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://ep-soft-feather-a18fkpj2-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+    username: neondb_owner
+    password: npg_L98UZoSsEnOP
+
+jwt:
+  secret: mySuperSecretKeyThatIsAtLeast32CharactersLong123
+  access-expiration: 604800000
+  refresh-expiration: 604800000
