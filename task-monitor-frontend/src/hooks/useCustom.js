@@ -71,17 +71,17 @@ export const useFetch = (fetchFn, dependencies = []) => {
 
   const fetchData = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!data) setIsLoading(true);
       setError(null);
       const result = await fetchFn();
       setData(result.data);
     } catch (err) {
       setError(err.message || 'Failed to fetch data');
-      setData(null);
+      if (!data) setData(null);
     } finally {
       setIsLoading(false);
     }
-  }, [fetchFn]);
+  }, [fetchFn, data]);
 
   useEffect(() => {
     fetchData();
