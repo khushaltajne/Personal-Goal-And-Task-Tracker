@@ -1,3 +1,4 @@
+import { ChevronRight, ChevronLeft, TrendingUp, TrendingDown } from 'lucide-react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { useEffect } from 'react';
 
