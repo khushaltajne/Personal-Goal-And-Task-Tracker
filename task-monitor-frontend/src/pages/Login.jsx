@@ -44,7 +44,7 @@ export default function Login() {
 
       if (response.data?.accessToken) {
         setSuccess("Authentication confirmed. Initializing session...");
-        
+
         setTimeout(() => {
           login(response.data.accessToken, rememberMe);
           navigate("/dashboard");
@@ -58,21 +58,21 @@ export default function Login() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 dark:bg-slate-950/80 backdrop-blur-md overflow-y-auto"
     >
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="w-full max-w-md relative z-10 my-auto"
       >
-        <button 
-          onClick={() => navigate('/')} 
+        <button
+          onClick={() => navigate('/')}
           className="absolute -top-3 -right-3 sm:-top-5 sm:-right-5 w-10 h-10 bg-white dark:bg-slate-800 shadow-xl rounded-full flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors z-[101] border border-slate-200 dark:border-slate-700"
         >
           <X size={20} />
@@ -87,7 +87,7 @@ export default function Login() {
 
             <AnimatePresence mode="wait">
               {error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
@@ -99,7 +99,7 @@ export default function Login() {
               )}
 
               {success && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
@@ -114,7 +114,7 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="space-y-6">
                 <div>
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Identity Vector</label>
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Username</label>
                   <div className="relative group">
                     <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
                     <input
@@ -128,7 +128,7 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Access Key</label>
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Password</label>
                   <div className="relative group">
                     <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
                     <input
@@ -152,9 +152,9 @@ export default function Login() {
               <div className="flex items-center justify-between px-2">
                 <label className="flex items-center gap-3 cursor-pointer group">
                   <div className="relative">
-                    <input 
-                      type="checkbox" 
-                      className="peer hidden" 
+                    <input
+                      type="checkbox"
+                      className="peer hidden"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                     />
@@ -190,7 +190,7 @@ export default function Login() {
 
         {/* Register CTA */}
         <div className="mt-10 py-6 px-10 rounded-[2.5rem] bg-white/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/5 backdrop-blur-xl flex items-center justify-between shadow-xl">
-          <p className="text-xs font-black text-slate-500 uppercase tracking-widest">New Operator?</p>
+          <p className="text-xs font-black text-slate-500 uppercase tracking-widest">New User?</p>
           <Link to="/register" className="text-xs font-black text-slate-900 dark:text-white hover:text-indigo-400 uppercase tracking-[0.2em] transition-colors flex items-center gap-2">
             Create Profile <Zap size={14} className="text-indigo-400" />
           </Link>
@@ -199,9 +199,9 @@ export default function Login() {
         {/* System Footer */}
         <div className="mt-8 flex flex-col items-center justify-center p-4 rounded-3xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/50 dark:border-white/5 shadow-lg">
           <div className="flex items-center justify-center gap-4 mb-3">
-             <div className="h-px w-8 bg-slate-200 dark:bg-white/10"></div>
-             <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em]">Secure Node v2.6.0</p>
-             <div className="h-px w-8 bg-slate-200 dark:bg-white/10"></div>
+            <div className="h-px w-8 bg-slate-200 dark:bg-white/10"></div>
+            <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em]">Secure Node v2.6.0</p>
+            <div className="h-px w-8 bg-slate-200 dark:bg-white/10"></div>
           </div>
           <div className="flex items-center justify-center gap-6">
             <div className="flex items-center gap-2 group cursor-help">

@@ -1,6 +1,23 @@
-import React from 'react';
-import { ChevronRight, ChevronLeft, TrendingUp, TrendingDown } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useSpring, useTransform } from 'framer-motion';
+import { useEffect } from 'react';
+
+// Animated Number Component for smooth counter transitions
+export const AnimatedNumber = ({ value, suffix = "", prefix = "", decimals = 0 }) => {
+  const spring = useSpring(value, { mass: 0.8, stiffness: 75, damping: 15 });
+  const display = useTransform(spring, (current) => {
+    const formatted = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(current);
+    return `${prefix}${formatted}${suffix}`;
+  });
+
+  useEffect(() => {
+    spring.set(value);
+  }, [value, spring]);
+
+  return <motion.span>{display}</motion.span>;
+};
 
 export const Table = ({ 
   columns = [], 
@@ -105,7 +122,7 @@ export const Table = ({
   );
 };
 
-export const StatsCard = ({ icon: Icon, label, value, trend, color = 'primary' }) => {
+export const StatsCard = ({ icon: Icon, label, value, trend, color = 'primary', suffix = "" }) => {
   const colorMap = {
     primary: 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-800 shadow-indigo-100/50 dark:shadow-none',
     success: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-800 shadow-emerald-100/50 dark:shadow-none',
@@ -149,7 +166,13 @@ export const StatsCard = ({ icon: Icon, label, value, trend, color = 'primary' }
       </div>
       <p className="text-sm font-bold text-slate-400 dark:text-slate-500 normal-case tracking-normal mb-2 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors uppercase tracking-[0.1em]">{label}</p>
       <div className="flex items-baseline gap-2">
-        <h3 className="text-3xl font-display font-black text-slate-900 dark:text-white tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors italic">{value}</h3>
+        <h3 className="text-3xl font-display font-black text-slate-900 dark:text-white tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors italic">
+          {typeof value === 'number' ? (
+            <AnimatedNumber value={value} suffix={suffix} />
+          ) : (
+            value
+          )}
+        </h3>
       </div>
       
       {/* Decorative gradient blob */}

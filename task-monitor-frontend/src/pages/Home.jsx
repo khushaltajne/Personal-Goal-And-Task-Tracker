@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import {
   CheckCircle,
   Menu, X,
@@ -23,11 +23,19 @@ import {
 } from 'lucide-react';
 import { Button } from '../components/Common';
 import ThemeToggle from '../components/ThemeToggle';
+import { AnimatedNumber } from '../components/DataDisplay';
+
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  
+  const [stats, setStats] = useState({
+    actions: 1428562,
+    velocity: 38.4,
+    success: 99.92,
+    achievers: 4215
+  });
+
   const location = useLocation();
   const showLogin = location.pathname === '/login';
   const showRegister = location.pathname === '/register';
@@ -37,7 +45,21 @@ export default function Home() {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // Simulate real-time updates
+    const interval = setInterval(() => {
+      setStats(prev => ({
+        actions: prev.actions + Math.floor(Math.random() * 5) + 1,
+        velocity: Math.min(45, prev.velocity + (Math.random() * 0.1 - 0.04)),
+        success: Math.min(99.99, Math.max(99.90, prev.success + (Math.random() * 0.01 - 0.005))),
+        achievers: prev.achievers + (Math.random() > 0.8 ? 1 : 0)
+      }));
+    }, 3000);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(interval);
+    };
   }, []);
 
   const features = [
@@ -65,7 +87,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 font-sans selection:bg-indigo-500/30 selection:text-indigo-900 dark:selection:text-indigo-100 overflow-x-hidden transition-colors duration-500">
-      
+
       {/* Auth Modals */}
       <AnimatePresence>
         {showLogin && <Login />}
@@ -73,12 +95,11 @@ export default function Home() {
       </AnimatePresence>
 
       {/* 1. Navigation */}
-      <nav 
-        className={`fixed w-full top-0 z-50 transition-all duration-300 border-b ${
-          isScrolled 
-            ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-slate-200/50 dark:border-slate-800/50 shadow-sm' 
-            : 'bg-transparent border-transparent'
-        }`}
+      <nav
+        className={`fixed w-full top-0 z-50 transition-all duration-300 border-b ${isScrolled
+          ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-slate-200/50 dark:border-slate-800/50 shadow-sm'
+          : 'bg-transparent border-transparent'
+          }`}
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
           <div className="flex justify-between items-center h-20">
@@ -105,7 +126,7 @@ export default function Home() {
               </Link>
               <Link to="/register">
                 <Button className="ml-4 rounded-2xl shadow-xl shadow-indigo-600/10">
-                   Start Journey
+                  Start Journey
                 </Button>
               </Link>
             </div>
@@ -125,7 +146,7 @@ export default function Home() {
         {/* Mobile Menu */}
         <AnimatePresence>
           {menuOpen && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
@@ -156,7 +177,7 @@ export default function Home() {
           </div>
 
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
@@ -189,57 +210,59 @@ export default function Home() {
                   </button>
                 </a>
               </div>
-              
-              <div className="mt-16 flex flex-col items-center gap-4">
-                 <div className="flex -space-x-3">
-                   {[1,2,3,4].map(i => (
-                     <div key={i} className="w-10 h-10 rounded-full border-4 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-800 flex items-center justify-center font-black text-[10px] text-slate-600 dark:text-slate-400">
-                       OP0{i}
-                     </div>
-                   ))}
-                   <div className="w-10 h-10 rounded-full border-4 border-white dark:border-slate-900 bg-indigo-600 flex items-center justify-center text-white font-black text-[10px]">
-                     +4k
-                   </div>
-                 </div>
-                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Achieving Peak Potential with Daily Focus</p>
-              </div>
             </motion.div>
           </div>
         </section>
 
         {/* 3. Global Stats */}
         <section className="py-24 bg-white dark:bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden transition-colors duration-500 border-y border-slate-100 dark:border-slate-800">
-           <div className="absolute inset-0 opacity-[0.03] dark:opacity-10 pointer-events-none" 
-                style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}>
-           </div>
-           
-           <div className="max-w-7xl mx-auto px-10">
-             <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
-                <StatItem label="Actions Tracked" value="1.4M+" accent="text-indigo-600 dark:text-indigo-400" />
-                <StatItem label="Growth Velocity" value="+38%" accent="text-emerald-600 dark:text-emerald-400" />
-                <StatItem label="Goal Success" value="99.9%" accent="text-amber-600 dark:text-amber-400" />
-                <StatItem label="Active Achievers" value="4.2k" accent="text-blue-600 dark:text-blue-400" />
-             </div>
-           </div>
+          <div className="absolute inset-0 opacity-[0.03] dark:opacity-10 pointer-events-none"
+            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}>
+          </div>
+
+          <div className="max-w-7xl mx-auto px-10">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
+              <StatItem 
+                label="Actions Tracked" 
+                value={<AnimatedNumber value={stats.actions / 1000000} suffix="M+" decimals={2} />} 
+                accent="text-indigo-600 dark:text-indigo-400" 
+              />
+              <StatItem 
+                label="Growth Velocity" 
+                value={<AnimatedNumber value={stats.velocity} prefix="+" suffix="%" decimals={1} />} 
+                accent="text-emerald-600 dark:text-emerald-400" 
+              />
+              <StatItem 
+                label="Goal Success" 
+                value={<AnimatedNumber value={stats.success} suffix="%" decimals={2} />} 
+                accent="text-amber-600 dark:text-amber-400" 
+              />
+              <StatItem 
+                label="Active Achievers" 
+                value={<AnimatedNumber value={stats.achievers / 1000} suffix="k" decimals={1} />} 
+                accent="text-blue-600 dark:text-blue-400" 
+              />
+            </div>
+          </div>
         </section>
 
         {/* 4. Ecosystem Preview */}
         <section id="preview" className="py-32 lg:py-48 bg-slate-50 dark:bg-slate-900/50 relative">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="flex flex-col lg:flex-row items-end justify-between gap-12 mb-20">
-               <div className="max-w-2xl">
+              <div className="max-w-2xl">
                 <h2 className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.3em] mb-4">Your Focus Center</h2>
                 <h3 className="text-4xl md:text-5xl font-display font-black text-slate-900 dark:text-white tracking-tight leading-[1.1]">Elite Visual Intelligence Over Your Personal Goals.</h3>
               </div>
               <p className="text-lg text-slate-500 dark:text-slate-400 font-medium max-w-md">From macro-strategic yearly visions down to micro-tactical daily actions. Full visibility into your growth.</p>
             </div>
 
-            <motion.div 
+            <motion.div
               style={{ perspective: 1000 }}
               className="relative rounded-[3rem] bg-slate-900 dark:bg-black shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-[12px] border-slate-900 dark:border-slate-800 group"
             >
               <div className="absolute -top-6 -right-6 w-32 h-32 bg-indigo-500 rounded-[2.5rem] blur-3xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-              
+
               {/* Fake Dashboard Shell */}
               <div className="aspect-[16/10] bg-slate-50 dark:bg-slate-900 rounded-[2.2rem] overflow-hidden relative flex selection:bg-indigo-500/20">
                 {/* Sidebar Mock */}
@@ -275,7 +298,7 @@ export default function Home() {
                       <div className="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800"></div>
                     </div>
                   </div>
-                  
+
                   {/* Dashboard Content */}
                   <div className="p-6 flex-1 flex flex-col gap-6 overflow-hidden">
                     {/* Stats Row */}
@@ -311,10 +334,10 @@ export default function Home() {
                         <div className="flex-1 flex items-end justify-between gap-3 min-h-0 relative">
                           {/* Grid Lines */}
                           <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20 z-0">
-                             <div className="w-full h-px bg-slate-300 dark:bg-slate-700"></div>
-                             <div className="w-full h-px bg-slate-300 dark:bg-slate-700"></div>
-                             <div className="w-full h-px bg-slate-300 dark:bg-slate-700"></div>
-                             <div className="w-full h-px bg-slate-300 dark:bg-slate-700"></div>
+                            <div className="w-full h-px bg-slate-300 dark:bg-slate-700"></div>
+                            <div className="w-full h-px bg-slate-300 dark:bg-slate-700"></div>
+                            <div className="w-full h-px bg-slate-300 dark:bg-slate-700"></div>
+                            <div className="w-full h-px bg-slate-300 dark:bg-slate-700"></div>
                           </div>
                           {[40, 60, 30, 80, 50, 90, 70, 45, 85, 65, 35, 75].map((h, i) => (
                             <div key={i} className="w-full bg-indigo-100/50 dark:bg-indigo-900/20 rounded-t-md relative z-10 transition-colors" style={{ height: `${h}%` }}>
@@ -360,7 +383,7 @@ export default function Home() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((feature, index) => (
-                <motion.div 
+                <motion.div
                   key={index}
                   whileHover={{ y: -10 }}
                   className="p-10 rounded-[2.5rem] bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 hover:bg-white dark:hover:bg-slate-800 hover:shadow-2xl hover:shadow-indigo-600/10 transition-all duration-500 group"
@@ -385,18 +408,18 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
-              <TierCard 
+              <TierCard
                 title="ACHIEVER"
                 price="0"
                 description="Personal essentials for starting your growth."
-                features={['5 Active Visions', 'Unlimited Daily Actions', 'Personal Dashboards', 'Cloud Sync']}
+                features={['Secure Data', 'Unlimited Daily Actions', 'Personal Dashboards']}
                 cta="Start Growing"
               />
-              <TierCard 
+              <TierCard
                 title="ELITE"
                 price="12"
                 description="The ultimate system for massive goals."
-                features={['Unlimited Everything', 'Vison Integration Engine', 'Advanced Growth Analytics', 'Priority Mentorship']}
+                features={['Unlimited Everything', 'Vison Integration Engine', 'Advanced Growth Analytics', 'Cloud Sync']}
                 cta="Go Elite"
                 premium
               />
@@ -407,7 +430,7 @@ export default function Home() {
         {/* 7. Final CTA */}
         <section className="py-40 relative bg-slate-50 dark:bg-slate-900/50 text-slate-900 dark:text-white overflow-hidden text-center transition-colors duration-500">
           <div className="absolute inset-x-0 bottom-0 top-0 -z-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-100/50 via-slate-50 to-slate-50 dark:from-indigo-900/30 dark:via-slate-950 dark:to-slate-950"></div>
-          
+
           <div className="max-w-3xl mx-auto px-6 relative z-10">
             <h2 className="text-5xl md:text-7xl font-display font-black mb-10 tracking-tighter italic">Achieve <span className="text-indigo-600 dark:text-indigo-400">Greatness.</span></h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 font-medium mb-16 px-10">Modernize your planning and execution habits in minutes. Start your flow today.</p>
@@ -422,39 +445,39 @@ export default function Home() {
 
         {/* 8. Footer */}
         <footer className="bg-white dark:bg-slate-950 pt-32 pb-16 px-6 lg:px-8 border-t border-slate-100 dark:border-slate-800 transition-colors duration-500">
-           <div className="max-w-7xl mx-auto">
-              <div className="grid md:grid-cols-5 gap-20 mb-32">
-                 <div className="md:col-span-2 space-y-10">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-2xl bg-slate-900 dark:bg-indigo-600 flex items-center justify-center">
-                        <CheckCircle2 size={24} className="text-white" />
-                      </div>
-                      <h4 className="text-2xl font-display font-black text-slate-900 dark:text-white tracking-tighter italic">GoalFlow</h4>
-                    </div>
-                    <p className="text-slate-500 dark:text-slate-400 font-medium text-lg leading-relaxed max-w-sm">
-                      Empowering achievers with the mission-critical systems to turn visions into reality.
-                    </p>
-                    <div className="flex gap-6">
-                      <SocialLink icon={Github} />
-                      <SocialLink icon={Linkedin} />
-                      <SocialLink icon={Twitter} />
-                    </div>
-                 </div>
-                 
-                  <FooterCol title="SELF" links={['Principles', 'Experience', 'Growth Plans', 'Personal Roadmap']} />
-                  <FooterCol title="SYSTEM" links={['Personal Cloud', 'API Access', 'Growth Logs', 'Achievers']} />
-                  <FooterCol title="RESOURCES" links={['About Us', 'Contact', 'Support']} />
-              </div>
-              
-              <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-slate-100 dark:border-slate-800 gap-8">
-                <p className="text-xs font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest">&copy; 2026 GOALFLOW INC. PERSONAL GROWTH SECURED.</p>
-                <div className="flex gap-8">
-                  <a href="#" className="text-[10px] font-black text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors uppercase tracking-widest">Privacy Protocol</a>
-                  <a href="#" className="text-[10px] font-black text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors uppercase tracking-widest">Master Service Agreement</a>
-                  <a href="#" className="text-[10px] font-black text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors uppercase tracking-widest">Security Grid</a>
+          <div className="max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-5 gap-20 mb-32">
+              <div className="md:col-span-2 space-y-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-slate-900 dark:bg-indigo-600 flex items-center justify-center">
+                    <CheckCircle2 size={24} className="text-white" />
+                  </div>
+                  <h4 className="text-2xl font-display font-black text-slate-900 dark:text-white tracking-tighter italic">GoalFlow</h4>
+                </div>
+                <p className="text-slate-500 dark:text-slate-400 font-medium text-lg leading-relaxed max-w-sm">
+                  Empowering achievers with the mission-critical systems to turn visions into reality.
+                </p>
+                <div className="flex gap-6">
+                  <SocialLink icon={Github} />
+                  <SocialLink icon={Linkedin} />
+                  <SocialLink icon={Twitter} />
                 </div>
               </div>
-           </div>
+
+              <FooterCol title="SELF" links={['Principles', 'Experience', 'Growth Plans', 'Personal Roadmap']} />
+              <FooterCol title="SYSTEM" links={['Personal Cloud', 'API Access', 'Growth Logs', 'Achievers']} />
+              <FooterCol title="RESOURCES" links={['About Us', 'Contact', 'Support']} />
+            </div>
+
+            <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-slate-100 dark:border-slate-800 gap-8">
+              <p className="text-xs font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest">&copy; 2026 GOALFLOW INC. PERSONAL GROWTH SECURED.</p>
+              <div className="flex gap-8">
+                <a href="#" className="text-[10px] font-black text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors uppercase tracking-widest">Privacy Protocol</a>
+                <a href="#" className="text-[10px] font-black text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors uppercase tracking-widest">Master Service Agreement</a>
+                <a href="#" className="text-[10px] font-black text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors uppercase tracking-widest">Security Grid</a>
+              </div>
+            </div>
+          </div>
         </footer>
       </main>
     </div>
@@ -465,8 +488,8 @@ export default function Home() {
 function StatItem({ label, value, accent }) {
   return (
     <div className="text-center group">
-       <p className={`${accent} text-5xl md:text-6xl font-display font-black tracking-tighter mb-2 group-hover:scale-110 transition-transform duration-500`}>{value}</p>
-       <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{label}</p>
+      <p className={`${accent} text-5xl md:text-6xl font-display font-black tracking-tighter mb-2 group-hover:scale-110 transition-transform duration-500`}>{value}</p>
+      <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{label}</p>
     </div>
   );
 }
@@ -474,34 +497,34 @@ function StatItem({ label, value, accent }) {
 function TierCard({ title, price, description, features, cta, premium }) {
   return (
     <div className={`p-1 border rounded-[3rem] ${premium ? 'bg-indigo-600 shadow-2xl shadow-indigo-600/30' : 'bg-slate-200 dark:bg-slate-800'} relative group`}>
-       {premium && (
-         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-indigo-600 text-[10px] font-black px-6 py-2 rounded-full uppercase tracking-widest shadow-xl">
-           Strategic Choice
-         </div>
-       )}
-       <div className={`h-full rounded-[2.9rem] p-10 flex flex-col ${premium ? 'bg-slate-900 border-none' : 'bg-white dark:bg-slate-900 border-none'}`}>
-          <h4 className={`text-[10px] font-black uppercase tracking-[0.3em] mb-4 ${premium ? 'text-indigo-400' : 'text-slate-400 dark:text-slate-500'}`}>{title}</h4>
-          <div className="flex items-baseline gap-2 mb-6">
-             <span className={`text-6xl font-display font-black tracking-tighter ${premium ? 'text-white' : 'text-slate-900 dark:text-white'}`}>${price}</span>
-              <span className={`text-xs font-bold ${premium ? 'text-slate-500' : 'text-slate-400'}`}>/MO</span>
-          </div>
-          <p className={`text-sm font-medium mb-10 ${premium ? 'text-slate-400' : 'text-slate-500'}`}>{description}</p>
-          
-          <div className="space-y-4 mb-12 flex-1">
-             {features.map((f, i) => (
-               <div key={i} className="flex items-center gap-3">
-                 <CheckCircle2 size={16} className={premium ? 'text-indigo-400' : 'text-indigo-600'} />
-                 <span className={`text-xs font-bold uppercase tracking-wide ${premium ? 'text-slate-300' : 'text-slate-700 dark:text-slate-300'}`}>{f}</span>
-               </div>
-             ))}
-          </div>
-          
-          <Link to="/register">
-            <Button variant={premium ? 'primary' : 'secondary'} className="w-full py-6 rounded-2xl font-black uppercase tracking-widest shadow-xl">
-              {cta}
-            </Button>
-          </Link>
-       </div>
+      {premium && (
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-indigo-600 text-[10px] font-black px-6 py-2 rounded-full uppercase tracking-widest shadow-xl">
+          Strategic Choice
+        </div>
+      )}
+      <div className={`h-full rounded-[2.9rem] p-10 flex flex-col ${premium ? 'bg-slate-900 border-none' : 'bg-white dark:bg-slate-900 border-none'}`}>
+        <h4 className={`text-[10px] font-black uppercase tracking-[0.3em] mb-4 ${premium ? 'text-indigo-400' : 'text-slate-400 dark:text-slate-500'}`}>{title}</h4>
+        <div className="flex items-baseline gap-2 mb-6">
+          <span className={`text-6xl font-display font-black tracking-tighter ${premium ? 'text-white' : 'text-slate-900 dark:text-white'}`}>${price}</span>
+          <span className={`text-xs font-bold ${premium ? 'text-slate-500' : 'text-slate-400'}`}>/MO</span>
+        </div>
+        <p className={`text-sm font-medium mb-10 ${premium ? 'text-slate-400' : 'text-slate-500'}`}>{description}</p>
+
+        <div className="space-y-4 mb-12 flex-1">
+          {features.map((f, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <CheckCircle2 size={16} className={premium ? 'text-indigo-400' : 'text-indigo-600'} />
+              <span className={`text-xs font-bold uppercase tracking-wide ${premium ? 'text-slate-300' : 'text-slate-700 dark:text-slate-300'}`}>{f}</span>
+            </div>
+          ))}
+        </div>
+
+        <Link to="/register">
+          <Button variant={premium ? 'primary' : 'secondary'} className="w-full py-6 rounded-2xl font-black uppercase tracking-widest shadow-xl">
+            {cta}
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
@@ -509,16 +532,16 @@ function TierCard({ title, price, description, features, cta, premium }) {
 function FooterCol({ title, links }) {
   return (
     <div className="space-y-8">
-       <h5 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-[0.3em]">{title}</h5>
-       <ul className="space-y-4">
-          {links.map((link, i) => (
-            <li key={i}>
-              <a href="#" className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold uppercase tracking-widest text-[10px] transition-colors">
-                {link}
-              </a>
-            </li>
-          ))}
-       </ul>
+      <h5 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-[0.3em]">{title}</h5>
+      <ul className="space-y-4">
+        {links.map((link, i) => (
+          <li key={i}>
+            <a href="#" className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold uppercase tracking-widest text-[10px] transition-colors">
+              {link}
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -526,7 +549,7 @@ function FooterCol({ title, links }) {
 function SocialLink({ icon: Icon }) {
   return (
     <a href="#" className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-slate-900 dark:hover:bg-slate-800 hover:text-white transition-all duration-300">
-       <Icon size={20} />
+      <Icon size={20} />
     </a>
   );
 }

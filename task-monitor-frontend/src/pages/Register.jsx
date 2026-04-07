@@ -34,11 +34,11 @@ export default function Register() {
       await authApi.register(username, email, password);
 
       setSuccess("Profile initialized successfully. Redirecting to access portal...");
-      
+
       setTimeout(() => {
         navigate("/login");
       }, 1500);
-      
+
     } catch (err) {
       setError(handleApiError(err));
     } finally {
@@ -47,21 +47,21 @@ export default function Register() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/40 dark:bg-slate-950/80 backdrop-blur-md overflow-y-auto"
     >
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 10 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="w-full max-w-lg relative z-10 my-auto"
       >
-        <button 
-          onClick={() => navigate('/')} 
+        <button
+          onClick={() => navigate('/')}
           className="absolute -top-3 -right-3 sm:-top-5 sm:-right-5 w-10 h-10 bg-white dark:bg-slate-800 shadow-xl rounded-full flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors z-[101] border border-slate-200 dark:border-slate-700"
         >
           <X size={20} />
@@ -71,12 +71,12 @@ export default function Register() {
         {/* Register Card */}
         <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-3xl rounded-[3.5rem] p-1 border border-slate-200/50 dark:border-white/10 shadow-2xl overflow-hidden">
           <div className="bg-white/90 dark:bg-white/5 rounded-[3.3rem] p-8 md:p-12 border border-slate-100 dark:border-white/5">
-            <h2 className="text-2xl font-display font-black text-slate-900 dark:text-white mb-1 tracking-tight">New Operator Registration</h2>
+            <h2 className="text-2xl font-display font-black text-slate-900 dark:text-white mb-1 tracking-tight">New User Registration</h2>
             <p className="text-slate-500 dark:text-slate-400 mb-10 font-medium text-sm">Configure your tactical identity below.</p>
 
             <AnimatePresence mode="wait">
               {error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -88,7 +88,7 @@ export default function Register() {
               )}
 
               {success && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -103,7 +103,7 @@ export default function Register() {
             <form onSubmit={handleSubmit} className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Identity Name</label>
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Name</label>
                   <div className="relative group">
                     <User className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
                     <input
@@ -117,7 +117,7 @@ export default function Register() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Communication Vector</label>
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Username/Email</label>
                   <div className="relative group">
                     <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
                     <input
@@ -131,7 +131,7 @@ export default function Register() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Secure Passphrase</label>
+                  <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-3 ml-1">Secure Password</label>
                   <div className="relative group">
                     <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
                     <input
@@ -170,7 +170,7 @@ export default function Register() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <span className="font-bold uppercase tracking-[0.2em] text-xs">Initialize Profile</span>
+                    <span className="font-bold uppercase tracking-[0.2em] text-xs">Create Profile</span>
                     <ArrowRight size={18} />
                   </div>
                 )}
@@ -181,7 +181,7 @@ export default function Register() {
 
         {/* Login CTA */}
         <div className="mt-8 py-6 px-10 rounded-[2.5rem] bg-white/60 dark:bg-white/[0.02] border border-slate-200/50 dark:border-white/5 backdrop-blur-xl flex items-center justify-between shadow-xl">
-          <p className="text-xs font-black text-slate-500 uppercase tracking-widest">Existing Operator?</p>
+          <p className="text-xs font-black text-slate-500 uppercase tracking-widest">Existing User?</p>
           <Link to="/login" className="text-xs font-black text-slate-900 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 uppercase tracking-[0.2em] transition-colors flex items-center gap-2">
             Establish Link <Zap size={14} className="text-indigo-400" />
           </Link>

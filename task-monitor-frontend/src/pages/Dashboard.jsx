@@ -40,6 +40,17 @@ export default function Dashboard() {
 
   const { data: stats, isLoading, error, refetch } = useFetch(fetchFn, [isAdmin]);
 
+  // Implement auto-polling for real-time feel
+  useEffect(() => {
+    const pollInterval = setInterval(() => {
+      if (user?.loggedIn) {
+        refetch();
+      }
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(pollInterval);
+  }, [user?.loggedIn, refetch]);
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -139,7 +150,8 @@ function UserDashboardContent({ stats }) {
         <StatsCard
           icon={TrendingUp}
           label="Goal Pulse"
-          value={`${stats?.monthlyProgress ?? 0}%`}
+          value={stats?.monthlyProgress ?? 0}
+          suffix="%"
           trend={{ direction: "up", value: 8 }}
           color="accent"
         />

@@ -23,7 +23,7 @@ import { dashboardApi } from "../api/dashboardApi";
 import { Modal, Confirmation } from "../components/Modal";
 import { useFetch } from "../hooks/useCustom";
 import { Card, Button, Badge, Loading, Input, Select } from "../components/Common";
-import { StatsCard } from "../components/DataDisplay";
+import { StatsCard, AnimatedNumber } from "../components/DataDisplay";
 
 export default function AdminDashboardView({ stats, refetch }) {
   const fetchUsersFn = useCallback(() => dashboardApi.getUsers(), []);
@@ -159,7 +159,9 @@ export default function AdminDashboardView({ stats, refetch }) {
                       </defs>
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-3xl font-display font-black text-slate-900 dark:text-white tracking-tighter italic">{activePercent}%</span>
+                      <span className="text-3xl font-display font-black text-slate-900 dark:text-white tracking-tighter italic">
+                        <AnimatedNumber value={activePercent} suffix="%" />
+                      </span>
                       <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-none">Active</span>
                     </div>
                   </div>
@@ -210,14 +212,14 @@ export default function AdminDashboardView({ stats, refetch }) {
               </div>
               
               <div className="space-y-2">
-                <InsightItem icon={Users} color="text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30" text={`${totalUsers} Total Population`} />
-                <InsightItem icon={UserCheck} color="text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30" text={`${activeUsers} Authorized Access`} />
+                <InsightItem icon={Users} color="text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30" text={<><AnimatedNumber value={totalUsers} /> Total Population</>} />
+                <InsightItem icon={UserCheck} color="text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30" text={<><AnimatedNumber value={activeUsers} /> Authorized Access</>} />
                 {inactiveUsers > 0 && (
-                  <InsightItem icon={AlertTriangle} color="text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30" text={`${inactiveUsers} Revoked Access`} />
+                  <InsightItem icon={AlertTriangle} color="text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20" text={<><AnimatedNumber value={inactiveUsers} /> Revoked Access</>} />
                 )}
-                <InsightItem icon={CheckCircle2} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" text={`${stats?.totalTasks ?? 0} Active Deployments`} />
-                <InsightItem icon={Target} color="text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30" text={`${stats?.totalGoals ?? 0} Strategic Objectives`} />
-                <InsightItem icon={Shield} color="text-indigo-800 dark:text-indigo-200 bg-indigo-100 dark:bg-indigo-800/50" text={`${adminCount} Master Command Keys`} />
+                <InsightItem icon={CheckCircle2} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" text={<><AnimatedNumber value={stats?.totalTasks ?? 0} /> Active Deployments</>} />
+                <InsightItem icon={Target} color="text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30" text={<><AnimatedNumber value={stats?.totalGoals ?? 0} /> Strategic Objectives</>} />
+                <InsightItem icon={Shield} color="text-indigo-800 dark:text-indigo-200 bg-indigo-100 dark:bg-indigo-800/50" text={<><AnimatedNumber value={adminCount} /> Master Command Keys</>} />
               </div>
            </Card>
 
