@@ -123,10 +123,10 @@ export default function YearlyGoals() {
             <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest border border-indigo-100 italic">Long-term Vision</span>
             <div className="h-px w-8 bg-indigo-100"></div>
           </div>
-          <h1 className="text-4xl lg:text-5xl font-display font-black tracking-tighter text-slate-900">
+          <h1 className="text-4xl lg:text-5xl font-display font-black tracking-tighter text-slate-900 dark:text-white">
             Yearly <span className="text-gradient">Visions</span>
           </h1>
-          <p className="text-slate-500 text-lg max-w-xl leading-relaxed">
+          <p className="text-slate-500 dark:text-slate-400 text-lg max-w-xl leading-relaxed">
             Architect your life by defining high-impact yearly visions and dreams.
           </p>
         </div>
@@ -213,12 +213,12 @@ export default function YearlyGoals() {
                       </div>
                     </div>
 
-                    <h3 className="text-xl font-display font-black text-slate-900 mb-3 tracking-tight group-hover:text-indigo-600 transition-colors">
+                    <h3 className="text-xl font-display font-black text-slate-900 dark:text-white mb-3 tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                       {goal.title}
                     </h3>
                     
                     {goal.description && (
-                      <p className="text-sm text-slate-500 line-clamp-2 mb-6 font-medium leading-relaxed italic">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-6 font-medium leading-relaxed italic">
                         "{goal.description}"
                       </p>
                     )}
@@ -226,24 +226,24 @@ export default function YearlyGoals() {
                     <div className="mt-auto space-y-6">
                       <div>
                         <div className="flex justify-between items-end mb-3">
-                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Progress</span>
-                          <span className="text-sm font-black text-slate-900">{Math.round(progress)}%</span>
+                          <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Progress</span>
+                          <span className="text-sm font-black text-slate-900 dark:text-white">{Math.round(progress)}%</span>
                         </div>
                         <ProgressBar value={progress} max={100} />
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 group-hover:bg-indigo-50 group-hover:border-indigo-100 transition-colors">
-                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Current</p>
-                          <p className="text-xl font-display font-black text-slate-900 tracking-tighter">{goal.currentValue}</p>
+                        <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/20 group-hover:border-indigo-100 dark:group-hover:border-indigo-800 transition-colors">
+                          <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Current</p>
+                          <p className="text-xl font-display font-black text-slate-900 dark:text-white tracking-tighter">{goal.currentValue}</p>
                         </div>
-                        <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 group-hover:bg-indigo-50 group-hover:border-indigo-100 transition-colors">
-                          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Target</p>
-                          <p className="text-xl font-display font-black text-slate-900 tracking-tighter">{goal.targetValue}</p>
+                        <div className="p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/20 group-hover:border-indigo-100 dark:group-hover:border-indigo-800 transition-colors">
+                          <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Target</p>
+                          <p className="text-xl font-display font-black text-slate-900 dark:text-white tracking-tighter">{goal.targetValue}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                      <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
                         <div className="flex items-center gap-2 text-slate-400">
                           <Calendar size={14} />
                           <span className="text-[10px] font-black uppercase tracking-widest">

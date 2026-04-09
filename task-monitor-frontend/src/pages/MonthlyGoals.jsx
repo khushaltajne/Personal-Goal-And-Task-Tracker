@@ -140,10 +140,10 @@ export default function MonthlyGoals() {
             <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-black uppercase tracking-widest border border-indigo-100">Milestones</span>
             <div className="h-px w-8 bg-indigo-100"></div>
           </div>
-          <h1 className="text-4xl lg:text-5xl font-display font-black tracking-tighter text-slate-900">
+          <h1 className="text-4xl lg:text-5xl font-display font-black tracking-tighter text-slate-900 dark:text-white">
             Monthly <span className="text-gradient">Milestones</span>
           </h1>
-          <p className="text-slate-500 text-lg max-w-xl leading-relaxed">
+          <p className="text-slate-500 dark:text-slate-400 text-lg max-w-xl leading-relaxed">
             Design your path by setting meaningful milestones for this month.
           </p>
         </div>
@@ -171,15 +171,15 @@ export default function MonthlyGoals() {
                 <div className="w-10 h-10 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-600">
                   <Calendar size={20} />
                 </div>
-                <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest">Timeframe</h2>
+                <h2 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest">Timeframe</h2>
               </div>
-              <p className="text-slate-500 text-xs mb-6 leading-relaxed">Select a month to view and manage your personal milestones.</p>
+              <p className="text-slate-500 dark:text-slate-400 text-xs mb-6 leading-relaxed">Select a month to view and manage your personal milestones.</p>
             </div>
             <div className="relative">
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="w-full appearance-none bg-slate-50 border border-slate-200 text-slate-900 text-sm font-bold rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 block p-4 pr-12 hover:border-indigo-300 transition-all cursor-pointer shadow-sm"
+                className="w-full appearance-none bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm font-bold rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 block p-4 pr-12 hover:border-indigo-300 dark:hover:border-indigo-500 transition-all cursor-pointer shadow-sm"
               >
                 {months.map(m => (
                   <option key={m.value} value={m.value}>{m.label}</option>
@@ -249,7 +249,7 @@ export default function MonthlyGoals() {
                         )}
                         {goal.yearlyGoalId && <Badge variant="neutral">Yearly Vision</Badge>}
                       </div>
-                      <h3 className="text-xl font-display font-black text-slate-900 group-hover:text-indigo-600 transition-colors tracking-tight line-clamp-1">{goal.title}</h3>
+                      <h3 className="text-xl font-display font-black text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors tracking-tight line-clamp-1">{goal.title}</h3>
                     </div>
                     <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
@@ -271,7 +271,7 @@ export default function MonthlyGoals() {
                   </div>
 
                   {goal.description && (
-                    <p className="text-sm text-slate-500 line-clamp-2 mb-8 leading-relaxed italic pr-4">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-8 leading-relaxed italic pr-4">
                       "{goal.description}"
                     </p>
                   )}
@@ -280,13 +280,13 @@ export default function MonthlyGoals() {
                     <ProgressBar value={progress} max={100} label="Completion Status" />
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="bg-slate-50/80 p-4 rounded-[1.5rem] border border-slate-100 group-hover:border-indigo-100 transition-all">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Current</p>
-                        <p className="font-display font-black text-slate-900 text-2xl tracking-tighter ring-offset-2">{goal.currentValue}</p>
+                      <div className="bg-slate-50/80 dark:bg-slate-800/40 p-4 rounded-[1.5rem] border border-slate-100 dark:border-slate-800 group-hover:border-indigo-100 dark:group-hover:border-indigo-800 transition-all">
+                        <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Current</p>
+                        <p className="font-display font-black text-slate-900 dark:text-white text-2xl tracking-tighter ring-offset-2">{goal.currentValue}</p>
                       </div>
-                      <div className="bg-slate-50/80 p-4 rounded-[1.5rem] border border-slate-100 group-hover:border-indigo-100 transition-all">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Target</p>
-                        <p className="font-display font-black text-slate-900 text-2xl tracking-tighter ring-offset-2">{goal.targetValue}</p>
+                      <div className="bg-slate-50/80 dark:bg-slate-800/40 p-4 rounded-[1.5rem] border border-slate-100 dark:border-slate-800 group-hover:border-indigo-100 dark:group-hover:border-indigo-800 transition-all">
+                        <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Target</p>
+                        <p className="font-display font-black text-slate-900 dark:text-white text-2xl tracking-tighter ring-offset-2">{goal.targetValue}</p>
                       </div>
                     </div>
                   </div>

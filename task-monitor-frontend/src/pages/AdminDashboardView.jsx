@@ -248,8 +248,8 @@ export default function AdminDashboardView({ stats, refetch }) {
                <Shield size={24} />
             </div>
             <div>
-              <h2 className="text-2xl font-display font-black text-slate-900 dark:text-white tracking-tight">User Directory</h2>
-              <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">Manage users, roles, and system access.</p>
+              <h2 className="text-2xl font-display font-black text-slate-900 dark:text-white tracking-tight mb-1">User Command Console</h2>
+              <p className="text-slate-500 dark:text-slate-400 font-medium">Managing access and roles across the tactical network.</p>
             </div>
           </div>
           

@@ -268,7 +268,7 @@ export default function Tasks() {
             </div>
             <div>
               <p className="text-[10px] font-black text-indigo-400 dark:text-indigo-500 uppercase tracking-widest leading-none mb-1">Momentum</p>
-              <p className="text-lg font-display font-black text-slate-900 dark:text-white leading-none">High Momentum</p>
+              <p className="text-lg font-display font-black text-slate-900 dark:text-indigo-100 leading-none">High Momentum</p>
             </div>
           </div>
         </div>
@@ -289,15 +289,15 @@ export default function Tasks() {
                     task.status === 'in-progress' ? 'bg-indigo-500 ring-indigo-50' : 'bg-amber-500 ring-amber-50'
                     }`}></div>
                   <div className="min-w-0">
-                    <p className={`font-display font-black text-lg mb-1 tracking-tight truncate transition-all ${task.status === 'completed' ? 'text-slate-400 line-through grayscale' : 'text-slate-900 group-hover:text-indigo-600'
+                    <p className={`font-display font-black text-lg mb-1 tracking-tight truncate transition-all ${task.status === 'completed' ? 'text-slate-400 dark:text-slate-600 line-through grayscale' : 'text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400'
                       }`}>{title}</p>
                     {task.description && (
-                      <p className="text-sm text-slate-500 line-clamp-2 leading-relaxed font-medium italic">"{task.description}"</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed font-medium italic">"{task.description}"</p>
                     )}
                     <div className="flex items-center gap-3 mt-3">
-                      <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-50 rounded-lg border border-slate-100">
-                        <Clock size={12} className="text-slate-400" />
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-wider">{formatDate(task.createdAt)}</span>
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-100 dark:border-slate-700">
+                        <Clock size={12} className="text-slate-400 dark:text-slate-500" />
+                        <span className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider">{formatDate(task.createdAt)}</span>
                       </div>
                     </div>
                   </div>
@@ -321,11 +321,11 @@ export default function Tasks() {
               render: (goalId) => {
                 const goal = monthlyGoals.find(g => g.id === goalId);
                 return (
-                  <div className="flex items-center gap-3 bg-slate-50/50 p-2 rounded-2xl border border-slate-100 max-w-[200px]">
-                    <div className="w-8 h-8 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-600 flex-shrink-0">
+                  <div className="flex items-center gap-3 bg-slate-50/50 dark:bg-slate-800/50 p-2 rounded-2xl border border-slate-100 dark:border-slate-700 max-w-[200px]">
+                    <div className="w-8 h-8 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0">
                       <Target size={16} />
                     </div>
-                    <span className="text-xs font-bold text-slate-900 truncate">
+                    <span className="text-xs font-bold text-slate-900 dark:text-slate-200 truncate">
                       {goal ? goal.title : `#${goalId || 'N/A'}`}
                     </span>
                   </div>
@@ -341,14 +341,14 @@ export default function Tasks() {
 
                 return (
                   <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-colors ${isOverdue ? 'bg-rose-50 text-rose-600 border border-rose-100' :
-                      isToday ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-slate-50 text-slate-400 border border-slate-100'
+                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-colors ${isOverdue ? 'bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30' :
+                      isToday ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30' : 'bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 border border-slate-100 dark:border-slate-700'
                       }`}>
                       <CalendarIcon size={18} />
                     </div>
                     <div className="text-sm">
-                      <p className={`font-black tracking-tight ${isOverdue ? 'text-rose-700' : 'text-slate-900'}`}>{formatDate(date)}</p>
-                      <p className={`text-[10px] font-black uppercase tracking-widest mt-0.5 ${isOverdue ? 'text-rose-500' : isToday ? 'text-amber-600' : 'text-slate-400'
+                      <p className={`font-black tracking-tight ${isOverdue ? 'text-rose-700 dark:text-rose-400' : 'text-slate-900 dark:text-white'}`}>{formatDate(date)}</p>
+                      <p className={`text-[10px] font-black uppercase tracking-widest mt-0.5 ${isOverdue ? 'text-rose-500 dark:text-rose-500' : isToday ? 'text-amber-600 dark:text-amber-500' : 'text-slate-400 dark:text-slate-500'
                         }`}>
                         {isOverdue ? 'CRITICAL' : isToday ? 'TODAY' : 'PLANNED'}
                       </p>
