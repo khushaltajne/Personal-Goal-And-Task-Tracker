@@ -46,7 +46,7 @@ export default function Login() {
         setSuccess("Authentication confirmed. Initializing session...");
 
         setTimeout(() => {
-          login(response.data.accessToken, rememberMe);
+          login(response.data.accessToken, response.data.refreshToken, rememberMe);
           navigate("/dashboard");
         }, 800);
       }

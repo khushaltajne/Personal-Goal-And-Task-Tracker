@@ -34,14 +34,50 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    // Session logout on 401 (Unauthorized) or 403 (Forbidden due to expired roles/tokens)
-    if (error.response?.status === 401 || error.response?.status === 403) {
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Trigger refresh logic on 401 or 403, ensuring we don't infinitely loop on retry
+    if (error.response && (error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = sessionStorage.getItem('refreshToken') || localStorage.getItem('refreshToken');
+
+      if (refreshToken) {
+        try {
+          // Use native axios to avoid interceptor loops if refresh itself fails
+          const response = await axios.post(`${API_BASE_URL}/api/auth/refresh`, { refreshToken });
+          
+          if (response.data && response.data.accessToken) {
+            const { accessToken, refreshToken: newRefreshToken } = response.data;
+            
+            // Update storage based on where it was originally stored
+            if (localStorage.getItem('token')) {
+              localStorage.setItem('token', accessToken);
+              if (newRefreshToken) localStorage.setItem('refreshToken', newRefreshToken);
+            } else {
+              sessionStorage.setItem('token', accessToken);
+              if (newRefreshToken) sessionStorage.setItem('refreshToken', newRefreshToken);
+            }
+
+            // Update original request headers with new valid token
+            originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+            
+            // Retry the original request
+            return api(originalRequest);
+          }
+        } catch (refreshError) {
+          console.error("Refresh token validation failed:", refreshError);
+        }
+      }
+
+      // If we reach here, refresh failed or no refresh token was found.
       sessionStorage.removeItem('token');
       localStorage.removeItem('token');
-      // Redirect to login with specific expired flag
+      sessionStorage.removeItem('refreshToken');
+      localStorage.removeItem('refreshToken');
       window.location.href = '/login?expired=true';
     }
+
     return Promise.reject(error);
   }
 );

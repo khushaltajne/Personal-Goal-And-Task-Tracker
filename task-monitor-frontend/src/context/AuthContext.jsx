@@ -39,12 +39,14 @@ export const AuthProvider = ({ children }) => {
     return null;
   });
 
-  const login = (token, rememberMe = false) => {
+  const login = (token, refreshToken, rememberMe = false) => {
     try {
       if (rememberMe) {
         localStorage.setItem("token", token);
+        if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
       } else {
         sessionStorage.setItem("token", token);
+        if (refreshToken) sessionStorage.setItem("refreshToken", refreshToken);
       }
       setUser(buildUser(jwtDecode(token)));
     } catch (err) {
@@ -56,6 +58,8 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     sessionStorage.removeItem("token");
     localStorage.removeItem("token");
+    sessionStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshToken");
   };
 
   return (
