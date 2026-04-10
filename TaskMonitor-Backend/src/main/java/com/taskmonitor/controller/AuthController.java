@@ -1,8 +1,6 @@
 package com.taskmonitor.controller;
 
 import com.taskmonitor.dto.*;
-import com.taskmonitor.entity.RefreshToken;
-import com.taskmonitor.repository.RefreshTokenRepository;
 import com.taskmonitor.service.AuthService;
 
 import jakarta.validation.Valid;
@@ -25,11 +23,10 @@ public class AuthController {
     // =============================
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(
-          @Valid  @RequestBody RegisterRequest request) {
+            @Valid @RequestBody RegisterRequest request) {
 
         return ResponseEntity.ok(
-                authService.register(request)
-        );
+                authService.register(request));
     }
 
     // =============================
@@ -37,11 +34,10 @@ public class AuthController {
     // =============================
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
-          @Valid  @RequestBody LoginRequest request) {
+            @Valid @RequestBody LoginRequest request) {
 
         return ResponseEntity.ok(
-                authService.login(request)
-        );
+                authService.login(request));
     }
 
     // =============================
@@ -54,8 +50,7 @@ public class AuthController {
         String refreshToken = request.get("refreshToken");
 
         return ResponseEntity.ok(
-                authService.refreshToken(refreshToken)
-        );
+                authService.refreshToken(refreshToken));
     }
 
     // =============================
@@ -69,4 +64,10 @@ public class AuthController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping
+    public String health() {
+        return "OK";
+    }
+
 }
