@@ -42,6 +42,16 @@ public class MonthlyGoalController {
                 monthlyGoalService.getMonthlyGoals(yearlyGoalId)
         );
     }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<MonthlyGoalResponseDTO> update(
+            @PathVariable Long id,
+            @RequestBody MonthlyGoalRequestDTO dto) {
+
+        return ResponseEntity.ok(
+                monthlyGoalService.updateMonthlyGoal(id, dto)
+        );
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

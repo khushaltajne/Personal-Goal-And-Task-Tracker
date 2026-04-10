@@ -10,6 +10,8 @@ public interface YearlyGoalService {
 	YearlyGoalResponseDTO createYearlyGoal(YearlyGoalRequestDTO dto);
 
     List<YearlyGoalResponseDTO> getMyYearlyGoals(Integer year);
+    
+    YearlyGoalResponseDTO updateYearlyGoal(Long id, YearlyGoalRequestDTO dto);
 
     void deleteYearlyGoal(Long id);
 }

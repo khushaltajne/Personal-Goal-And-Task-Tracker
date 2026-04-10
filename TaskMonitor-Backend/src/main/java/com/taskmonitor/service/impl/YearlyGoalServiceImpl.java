@@ -73,6 +73,28 @@ public class YearlyGoalServiceImpl implements YearlyGoalService {
                     .toList();
         }
     }
+    
+    @Override
+    public YearlyGoalResponseDTO updateYearlyGoal(Long id, YearlyGoalRequestDTO dto) {
+        AppUser user = getLoggedUser();
+
+        YearlyGoal goal = yearlyGoalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Yearly Goal Not Found"));
+
+        if (!goal.getUser().getId().equals(user.getId()))
+            throw new RuntimeException("Access Denied");
+
+        if (dto.getTitle() != null)
+            goal.setTitle(dto.getTitle());
+        if (dto.getDescription() != null)
+            goal.setDescription(dto.getDescription());
+        if (dto.getYear() != 0)
+            goal.setYear(dto.getYear());
+        if (dto.getStatus() != null)
+            goal.setStatus(dto.getStatus());
+
+        return map(yearlyGoalRepository.save(goal));
+    }
 
     @Override
     public void deleteYearlyGoal(Long id) {

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,8 +31,7 @@ public class YearlyGoalController {
             @RequestBody YearlyGoalRequestDTO dto) {
 
         return ResponseEntity.ok(
-                yearlyGoalService.createYearlyGoal(dto)
-        );
+                yearlyGoalService.createYearlyGoal(dto));
     }
 
     @GetMapping
@@ -39,8 +39,16 @@ public class YearlyGoalController {
             @RequestParam(required = false) Integer year) {
 
         return ResponseEntity.ok(
-                yearlyGoalService.getMyYearlyGoals(year)
-        );
+                yearlyGoalService.getMyYearlyGoals(year));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<YearlyGoalResponseDTO> update(
+            @PathVariable Long id,
+            @RequestBody YearlyGoalRequestDTO dto) {
+
+        return ResponseEntity.ok(
+                yearlyGoalService.updateYearlyGoal(id, dto));
     }
 
     @DeleteMapping("/{id}")

@@ -12,5 +12,7 @@ public interface MonthlyGoalService {
 	    
 	    List<MonthlyGoalResponseDTO> getMonthlyGoals();
 	    
+	    MonthlyGoalResponseDTO updateMonthlyGoal(Long id, MonthlyGoalRequestDTO dto);
+	    
 	    void deleteMonthlyGoal(Long id);
 }

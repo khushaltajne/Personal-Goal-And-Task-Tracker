@@ -93,6 +93,43 @@ public class MonthlyGoalServiceImpl implements MonthlyGoalService {
                 .map(monthlyGoalMapper::toDTO)
                 .toList();
     }
+    
+    @Override
+    public MonthlyGoalResponseDTO updateMonthlyGoal(Long id, MonthlyGoalRequestDTO dto) {
+        AppUser user = getLoggedUser();
+
+        MonthlyGoal goal = monthlyGoalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Monthly Goal Not Found"));
+
+        if (!goal.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Access Denied");
+        }
+
+        if (dto.getTitle() != null) goal.setTitle(dto.getTitle());
+        if (dto.getDescription() != null) goal.setDescription(dto.getDescription());
+        if (dto.getMonth() != null) goal.setMonth(dto.getMonth());
+        if (dto.getTargetValue() != 0) goal.setTargetValue(dto.getTargetValue());
+        
+        goal.setCurrentValue(dto.getCurrentValue());
+        
+        if (dto.getTargetValue() > 0 || goal.getTargetValue() > 0) {
+            double target = dto.getTargetValue() > 0 ? dto.getTargetValue() : goal.getTargetValue();
+            double progress = (goal.getCurrentValue() / target) * 100;
+            goal.setProgress(progress > 100 ? 100 : progress); 
+        }
+
+        if (dto.getYearlyGoalId() != null) {
+            YearlyGoal yearlyGoal = yearlyGoalRepository.findById(dto.getYearlyGoalId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Yearly Goal Not Found"));
+            if (!yearlyGoal.getUser().getId().equals(user.getId())) {
+                throw new RuntimeException("Access Denied");
+            }
+            goal.setYearlyGoal(yearlyGoal);
+        }
+
+        MonthlyGoal savedGoal = monthlyGoalRepository.save(goal);
+        return monthlyGoalMapper.toDTO(savedGoal);
+    }
 
     @Override
     public void deleteMonthlyGoal(Long id) {
