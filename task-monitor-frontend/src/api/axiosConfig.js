@@ -40,7 +40,10 @@ api.interceptors.response.use(
     // Trigger refresh logic on 401 or 403, ensuring we don't infinitely loop on retry
     if (error.response && (error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
       originalRequest._retry = true;
-      const refreshToken = sessionStorage.getItem('refreshToken') || localStorage.getItem('refreshToken');
+      // Determine which refresh token we use
+      const sessionRefresh = sessionStorage.getItem('refreshToken');
+      const localRefresh = localStorage.getItem('refreshToken');
+      const refreshToken = sessionRefresh || localRefresh;
 
       if (refreshToken) {
         try {
@@ -50,13 +53,14 @@ api.interceptors.response.use(
           if (response.data && response.data.accessToken) {
             const { accessToken, refreshToken: newRefreshToken } = response.data;
             
-            // Update storage based on where it was originally stored
-            if (localStorage.getItem('token')) {
+            // ALWAYS update the tab's isolated session
+            sessionStorage.setItem('token', accessToken);
+            if (newRefreshToken) sessionStorage.setItem('refreshToken', newRefreshToken);
+
+            // Update localStorage ONLY if this tab was the one matching the current global persistent token
+            if (localRefresh === refreshToken) {
               localStorage.setItem('token', accessToken);
               if (newRefreshToken) localStorage.setItem('refreshToken', newRefreshToken);
-            } else {
-              sessionStorage.setItem('token', accessToken);
-              if (newRefreshToken) sessionStorage.setItem('refreshToken', newRefreshToken);
             }
 
             // Update original request headers with new valid token

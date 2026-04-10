@@ -24,15 +24,26 @@ function buildUser(decoded) {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    // Prioritize sessionStorage for tab isolation, fallback to localStorage for persistence
-    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+    // Prioritize sessionStorage for tab isolation
+    let token = sessionStorage.getItem("token");
+    
+    // If no session token, check local storage (persistent token from another tab's rememberMe)
+    if (!token) {
+      token = localStorage.getItem("token");
+      if (token) {
+        // Copy it into this tab's session storage so this tab is now isolated with this account
+        sessionStorage.setItem("token", token);
+        const rToken = localStorage.getItem("refreshToken");
+        if (rToken) sessionStorage.setItem("refreshToken", rToken);
+      }
+    }
+
     if (token) {
       try {
         return buildUser(jwtDecode(token));
       } catch (err) {
         console.error("Failed to decode token", err);
         sessionStorage.removeItem("token");
-        localStorage.removeItem("token");
         return null;
       }
     }
@@ -41,12 +52,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token, refreshToken, rememberMe = false) => {
     try {
+      // ALWAYS isolate the current tab to the new login
+      sessionStorage.setItem("token", token);
+      if (refreshToken) sessionStorage.setItem("refreshToken", refreshToken);
+
       if (rememberMe) {
+        // Set as default for future tabs
         localStorage.setItem("token", token);
         if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
-      } else {
-        sessionStorage.setItem("token", token);
-        if (refreshToken) sessionStorage.setItem("refreshToken", refreshToken);
       }
       setUser(buildUser(jwtDecode(token)));
     } catch (err) {
