@@ -14,11 +14,8 @@ export const yearlyGoalApi = {
   create: (data) =>
     api.post('/api/yearly-goals', data),
   
-  // Note: Backend doesn't provide update
-  update: (id, data) => {
-    console.warn('update not implemented in backend');
-    return Promise.reject(new Error('Not implemented'));
-  },
+  update: (id, data) =>
+    api.put(`/api/yearly-goals/${id}`, data),
   
   delete: (id) =>
     api.delete(`/api/yearly-goals/${id}`),

@@ -15,10 +15,8 @@ export const monthlyGoalApi = {
   getAll: () => 
     api.get('/api/monthly-goals'),
   
-  update: (id, goalData) => {
-    console.warn('update not implemented in backend');
-    return Promise.reject(new Error('Not implemented'));
-  },
+  update: (id, goalData) =>
+    api.put(`/api/monthly-goals/${id}`, goalData),
   
   delete: (id) =>
     api.delete(`/api/monthly-goals/${id}`),
